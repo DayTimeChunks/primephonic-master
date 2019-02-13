@@ -12,39 +12,52 @@ class App extends Component {
     super(props);
     this.state = {
       data: {},
-      id: 0
+      slug: null
     }
   }
 
-  onUpdateQuery = (time) => {
-    PrimephonicAPI.getProcessedData(time)
-      .then(newData => this.setState({data: newData, id: this.state.id+1}))
+  onUpdateQuery = (timeSlug) => {
+    PrimephonicAPI.getProcessedData(timeSlug)
+      .then(newData => {
+        if (newData.dblength !== this.state.data.dbLength){
+          this.setState({
+            data: newData,
+            slug: timeSlug
+          })
+        }
+      })
   };
 
-//  TODO: updateRequest should not take parameters, move computation to front end?
-/*  updateRequest = () => {
-    PrimephonicAPI.getProcessedData(time)
-      .then(newData => this.setState({data: newData, id: 0}))
+  updateRequest = () => {
+    console.log("updateRequest slug", this.state.slug);
+    if (this.state.slug){
+      PrimephonicAPI.getProcessedData(this.state.slug)
+        .then(newData => {
+
+          if (newData.dbLength !== this.state.data.dbLength)
+            this.setState({data: newData})
+        })
+        .catch( (err) => {
+          console.log("getSearch error, ", err)
+        });
+    }
   };
 
   autoRefresh = () => {
-    setInterval(this.updateRequest, 15000
+    setInterval(this.updateRequest, 5000
     );
   };
 
-  */
-
   componentDidMount(){
     // Default = Jan. 1st 2019 (1546300800)
-    PrimephonicAPI.getProcessedData(1546300800).then( data => {
-      this.setState(
-        {data: data})
+    // Default is now
+    const now = Math.floor(Date.now()/1000);
+    PrimephonicAPI.getProcessedData(now)
+      .then( data => {this.setState({data: data, slug: now})})
+      .catch( (err) => {
+        console.log("getSearch error on default, ", err)
     });
   }
-
-  // TODO: Route passed properties to table,
-  // create a function inside Table component that queries PrimephonicAPI with the
-  // correct search parameters, then update data in Table.
 
   render() {
     return (
@@ -64,7 +77,7 @@ class App extends Component {
                   props={props}
                   updateQuery={this.onUpdateQuery}
                   autoRefresh={this.autoRefresh}
-                  id={this.state.id}
+                  timeSlug={this.state.slug}
                   data={this.state.data}
                   location={this.props.location}
                 />

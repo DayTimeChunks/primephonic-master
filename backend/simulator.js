@@ -89,7 +89,7 @@ const processData = (token, query) => {
   const now = Math.floor(Date.now()/1000);
   let totalSeconds = 0;
   let trackStanding = {}; // {"track1": total_seconds, ...}
-  let labelStandings = buildLabels(3); // [{"label1": {"track1": tot_seconds, "track2": tot_secs}, "label2": {...}, ... }]
+  let labelStandings = buildLabels(labels); // [{"label1": {"track1": tot_seconds, "track2": tot_secs}, "label2": {...}, ... }]
 
   if (queryStartTime <= now){ // Query time is not in the future
     // Iterate the data
@@ -130,6 +130,7 @@ const processData = (token, query) => {
   }
 
   return {
+    dbLength: db.usage.length,
     totalStreamed: totalSeconds,
     trackStanding: trackStanding,
     labelStandings: labelStandings

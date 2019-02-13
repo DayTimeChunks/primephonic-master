@@ -12,21 +12,23 @@ class Table extends Component {
     data: PropTypes.object,
     updateQuery: PropTypes.func,
     autoRefresh: PropTypes.func,
-    id: PropTypes.number
+    timeSlug: PropTypes.number
   };
 
   componentDidMount(){
     if (this.props){
-      const time = Object.values(this.props)[0]["location"]["search"].split("=")[1];
-      this.props.autoRefresh(time);
+      this.props.autoRefresh();
     }
   }
 
   componentDidUpdate(){
-    if (this.props && this.props.id < 1){
-      const time = Object.values(this.props)[0]["location"]["search"].split("=")[1];
-      console.log("time", time);
-      this.props.updateQuery(time);
+    if (this.props){
+      const newTimeSlug = Object.values(this.props)[0]["location"]["search"].split("=")[1];
+      console.log("timeslugn", typeof newTimeSlug);
+      // console.log("timeSlug changed", newTimeSlug !== this.props.timeSlug);
+      if (newTimeSlug && newTimeSlug !== this.props.timeSlug){
+        this.props.updateQuery(newTimeSlug);
+      }
     }
   }
 
@@ -64,6 +66,7 @@ class Table extends Component {
       let standings = Object.values(this.props.data.labelStandings);
       for (let i = 0; i < standings.length; i++){
         standsArray.push({
+          "key": i,
           "label": Object.keys(standings[i])[0],
           "total":  Object.values(standings[i])[0]["total"],
           "name": this.getLeadingTrack(Object.values(standings[i])[0])["name"]
@@ -71,7 +74,30 @@ class Table extends Component {
       }
     }
 
-    return (standsArray && standsArray.length > 0 && (
+    return (standsArray && standsArray.length > 0 && (standsArray.map( label => (
+
+        <tr key={label.key}>
+          <th scope="row" >{label.label}</th>
+          <td>{label.total}</td>
+          <td>{label.name}</td>
+        </tr>
+
+      )
+    )))
+  };
+
+  render() {
+
+    const {data} = this.props;
+
+    // console.log(Object.values(this.props)[0]["location"]["search"].split("=")[1]); // seconds queried
+
+    return (<div>
+
+      <p>Total streaming is now {data.totalStreamed} seconds and counting!</p>
+
+      {this.leadingComment()}
+
       <table className="table">
         <thead className="thead-light">
         <tr>
@@ -81,35 +107,11 @@ class Table extends Component {
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <th scope="row">Label 1</th>
-          <td>{standsArray[0]["total"]}</td>
-          <td>{standsArray[0]["name"]}</td>
-        </tr>
-        <tr>
-          <th scope="row">Label 2</th>
-          <td>{standsArray[1]["total"]}</td>
-          <td>{standsArray[1]["name"]}</td>
-        </tr>
-        <tr>
-          <th scope="row">Label 3</th>
-          <td>{standsArray[2]["total"]}</td>
-          <td>{standsArray[2]["name"]}</td>
-        </tr>
+          {this.leadingTable()}
         </tbody>
       </table>
-    ));
-  };
 
-  render() {
 
-    // console.log(Object.values(this.props)[0]["location"]["search"].split("=")[1]); // seconds queried
-
-    return (<div>
-
-      {this.leadingComment()}
-
-      {this.leadingTable()}
 
     </div>)
   }

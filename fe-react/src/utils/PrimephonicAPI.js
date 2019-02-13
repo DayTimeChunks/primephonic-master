@@ -11,12 +11,15 @@ const headers = {
   'Authorization': token
 };
 
-export const getAll = () =>
-  fetch(`${api}/api/data`, { headers })
-    .then(res => res.json())
-    .then(data => {return data});
+// export const getAll = () =>
+//   fetch(`${api}/api/data`, { headers })
+//     .then(res => res.json())
+//     .then(data => {return data});
 
 export const getProcessedData = (time) =>
   fetch(`${api}/api/usage?from=${time}`, { headers })
     .then(res => res.json())
-    .then(data => {return data});
+    .then(data => {return data})
+    .catch( (err) => {
+    console.log("Error on getProcessedData, ", err)
+  });
