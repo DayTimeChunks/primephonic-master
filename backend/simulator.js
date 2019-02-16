@@ -3,6 +3,7 @@
 const clone = require('clone');
 const config = require('./config/index');
 
+const freq = 10000; // miliseconds
 const db = {
   usage: [
     {
@@ -57,8 +58,8 @@ const getRandomObjects = () => {
       "user_id": users.splice(getRandomInt(users.length-1), 1)[0].toString(),
       "track_id": "track" + getRandomInt(tracks).toString(),
       "label": "label" + getRandomInt(labels).toString(),
-      "stream_started_on": now - 10,
-      "seconds_streamed": 10
+      "stream_started_on": now - freq/1000,
+      "seconds_streamed": freq/1000
     };
     db.usage.push(userObj);
   }
@@ -66,7 +67,7 @@ const getRandomObjects = () => {
 };
 
 (function generateData(){
-  setInterval(getRandomObjects, 10000);
+  setInterval(getRandomObjects, freq);
 }());
 
 const buildLabels = (numLabels) => {
