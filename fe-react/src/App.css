@@ -38,3 +38,21 @@
     /*transform: rotate(360deg);*/
   /*}*/
 /*}*/
+
+rect.overlay {
+  opacity: 0;
+}
+
+rect.selection {
+  fill: #FE9922;
+  opacity: 0.5;
+}
+
+rect.handle {
+  fill: #FE9922;
+  opacity: 0.25;
+}
+
+.cell-center {
+  text-align: center;
+}

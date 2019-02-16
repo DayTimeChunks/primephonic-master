@@ -3,11 +3,6 @@ import PropTypes from 'prop-types'
 
 class Table extends Component {
 
-  // constructor(props){
-  //   super(props);
-  //   // console.log(Object.values(props)[0]["location"]["search"].split("=")[1]);
-  // }
-
   static propTypes = {
     data: PropTypes.object,
     updateQuery: PropTypes.func,
@@ -24,7 +19,7 @@ class Table extends Component {
   componentDidUpdate(){
     if (this.props){
       const newTimeSlug = Object.values(this.props)[0]["location"]["search"].split("=")[1];
-      console.log("timeslugn", typeof newTimeSlug);
+      // console.log("timeslugn", typeof newTimeSlug);
       // console.log("timeSlug changed", newTimeSlug !== this.props.timeSlug);
       if (newTimeSlug && newTimeSlug !== this.props.timeSlug){
         this.props.updateQuery(newTimeSlug);
@@ -77,9 +72,9 @@ class Table extends Component {
     return (standsArray && standsArray.length > 0 && (standsArray.map( label => (
 
         <tr key={label.key}>
-          <th scope="row" >{label.label}</th>
-          <td>{label.total}</td>
-          <td>{label.name}</td>
+          <th scope="row" className="cell-center">{label.label.substr(-1)}</th>
+          <td className="cell-center">{label.total}</td>
+          <td className="cell-center">{label.name}</td>
         </tr>
 
       )
@@ -101,9 +96,9 @@ class Table extends Component {
       <table className="table">
         <thead className="thead-light">
         <tr>
-          <th scope="col">Label</th>
-          <th scope="col">Label streaming</th>
-          <th scope="col">Most streamed</th>
+          <th className="cell-center" scope="col">Label</th>
+          <th className="cell-center" scope="col">Seconds</th>
+          <th className="cell-center" scope="col">Most streamed</th>
         </tr>
         </thead>
         <tbody>
