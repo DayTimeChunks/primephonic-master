@@ -9,6 +9,7 @@ Vue.use(VueRouter);
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import TimeButtons from "./components/TimeButtons";
 
 Vue.config.productionTip = false;
 
@@ -24,10 +25,10 @@ const router = new VueRouter({
     // Wildcard path
     path: '*',
     // Specify component to be rendered for this route
-    component: Table,
+    component: [Table, TimeButtons],
     // Inject  props based on route.query values (our query parameters)
     props: (route) => ({
-      from: route.query.from
+      from: route.query.from,
     })
   }]
 });

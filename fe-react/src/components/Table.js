@@ -18,9 +18,7 @@ class Table extends Component {
 
   componentDidUpdate(){
     if (this.props){
-      const newTimeSlug = Object.values(this.props)[0]["location"]["search"].split("=")[1];
-      // console.log("timeslugn", typeof newTimeSlug);
-      // console.log("timeSlug changed", newTimeSlug !== this.props.timeSlug);
+      const newTimeSlug = parseInt(Object.values(this.props)[0]["location"]["search"].split("=")[1]);
       if (newTimeSlug && newTimeSlug !== this.props.timeSlug){
         this.props.updateQuery(newTimeSlug);
       }
@@ -48,26 +46,24 @@ class Table extends Component {
 
   };
 
-  leadingComment = () => {
-    const winner = this.getLeadingTrack(this.props.data.trackStanding);
-    return (winner && (
-        <p>Our most popular track now is <strong>{winner.name}</strong> with <strong>{winner.time}</strong> seconds streamed!</p>)
-    )
-  };
-
   leadingTable = () => {
     let standsArray = [];
-    if (this.props.data.labelStandings) {
-      let standings = Object.values(this.props.data.labelStandings);
-      for (let i = 0; i < standings.length; i++){
-        standsArray.push({
-          "key": i,
-          "label": Object.keys(standings[i])[0],
-          "total":  Object.values(standings[i])[0]["total"],
-          "name": this.getLeadingTrack(Object.values(standings[i])[0])["name"]
-        })
+    try {
+      if (this.props.data.labelStandings) {
+        let standings = Object.values(this.props.data.labelStandings);
+        for (let i = 0; i < standings.length; i++){
+          standsArray.push({
+            "key": i,
+            "label": Object.keys(standings[i])[0],
+            "total":  Object.values(standings[i])[0]["total"],
+            "name": this.getLeadingTrack(Object.values(standings[i])[0])["name"]
+          })
+        }
       }
+    } catch (e) {
+      throw new Error(`Data is undefined, likely server is not connected.`)
     }
+
 
     return (standsArray && standsArray.length > 0 && (standsArray.map( label => (
 
@@ -84,14 +80,19 @@ class Table extends Component {
   render() {
 
     const {data} = this.props;
+    const totalStreamed = (data && data.totalStreamed && data.totalStreamed > 0) ? data.totalStreamed : 0;
+    const queryTimeFormat = new Date(this.props.timeSlug * 1000).toLocaleDateString('en-US', {
+      day: 'numeric', month: 'short', year: 'numeric'
+    });
 
-    // console.log(Object.values(this.props)[0]["location"]["search"].split("=")[1]); // seconds queried
+    const winner = (data && data.trackStanding) ? this.getLeadingTrack(data.trackStanding) : {"name": 'None', "time": 0};
 
     return (<div>
 
-      <p>Total streaming is now {data.totalStreamed} seconds and counting!</p>
+      <p>Total seconds streamed since {queryTimeFormat} {totalStreamed > 0 ? "are " : "is "} {
+        totalStreamed} seconds {totalStreamed > 0 ? "and" : "but"} counting!</p>
 
-      {this.leadingComment()}
+      <p>Our most popular track now is <strong>{winner.name}</strong> with <strong>{winner.time}</strong> seconds streamed across all labels!</p>
 
       <table className="table">
         <thead className="thead-light">

@@ -15,6 +15,13 @@ npm run serve
 npm run build
 ```
 
+### Preview the production version locally
+
+If not already have `serve` installed: `npm install -g serve`, then: 
+```
+serve -s dist
+```
+
 ### Run your tests
 ```
 npm run test

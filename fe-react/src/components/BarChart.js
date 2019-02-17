@@ -13,40 +13,44 @@ class BarChart extends Component {
   constructor(props){
     super(props);
     this.state = {
-      hover: "none",
-      // dataToggle:"",
-      // title: "",
-      // dataContent:""
+      hover: "none"
     };
-
     // Bind the component (this) as context to internal functions
     // (i.e. to access this.props or this.state in that function)
-    this.onHover = this.onHover.bind(this)
-    // this.onBarClick = this.onBarClick.bind(this)
+    this.onHover = this.onHover.bind(this);
     this.createBarChart = this.createBarChart.bind(this)
   }
+
+  static propTypes = {
+    data: PropTypes.object,
+    colorScale: PropTypes.func,
+    size: PropTypes.array
+  };
+
+
   onHover(d) {
     this.setState({
       hover: d.id,
     })
   }
 
-  // Implement if more time
-  // onBarClick(d) {
-  //   this.setState({
-  //     hover: d.id,
-  //     dataToggle: "popover",
-  //     title: "Popover Header",
-  //     dataContent: "some data"
-  //   })
-  // }
-
-
   componentDidMount() {
-    this.createBarChart()
+    try {
+      this.createBarChart()
+    } catch (e) {
+      throw new Error(`If the server is not running try typing: 
+      "node server.js" inside the "./backend" folder directory
+      `)
+    }
   }
   componentDidUpdate() {
-    this.createBarChart()
+    try {
+      this.createBarChart()
+    } catch (e) {
+      throw new Error(`If the server is not running try typing: 
+      "node server.js" inside the "./backend" folder directory
+      `)
+    }
   }
 
   createEmptyFilter = (totLabels, totTracks) => {
@@ -71,12 +75,11 @@ class BarChart extends Component {
   createBarChart() {
     const totTracks = 5;
     // this.props.data = [{label1: {…}}, {label2: {…}}, ...]
-    const totLables = (this.props.data && this.props.data.length > 1) ? this.props.data.length : 5;
+    const totLables = (this.props.data.labelStandings && this.props.data.labelStandings.length > 1) ? this.props.data.labelStandings.length : 5;
     let filterData = this.createEmptyFilter(totLables, totTracks);
     const node = this.node; // <svg> Reference to the actual DOM node created by React, handed over to D3
-    // console.log("this.props.data ", this.props.data ) // [{label1: {…}}, {label2: {…}}, ...]
 
-    this.props.data && (this.props.data.map(label => {
+    this.props.data.labelStandings && (this.props.data.labelStandings.map(label => {
       let tName;
       let lName = Object.keys(label)[0];
       let tracksObj = Object.values(label)[0];

@@ -26,8 +26,13 @@
 </template>
 
 <script>
+  // import TimeButtons from "./TimeButtons";
+
   export default {
     name: "Table",
+    components: {
+      // TimeButtons
+    },
     props: {
       myData: Object,
       winner: Object,

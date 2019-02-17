@@ -8,10 +8,12 @@
     <div class='row'>
       <div class="col-12 col-md-6">
         <div>
-          <p>Welcome to Primephonic's streaming monitoring service.</p>
+          <p>Welcome to Primephonic's streaming monitoring service. Please select a query period below. New queries are automatically made every 15 seconds.</p>
+          <TimeButtons @updateQuery="onUpdateQuery"/>
           <Table v-bind:myData="myData"
                  v-bind:winner="winner"
                  v-bind:labels="labels"
+
           />
         </div>
       </div>
@@ -26,8 +28,9 @@
 
 <script>
 
-import Table from './components/Table.vue'
 import * as PrimephonicAPI from "./utils/PrimephonicAPI"
+import Table from './components/Table.vue'
+import TimeButtons from "./components/TimeButtons";
 
 const reqFrequency = 15000; // milliseconds
 
@@ -35,7 +38,7 @@ export default {
   name: 'app',
   // props: ['data'],
   components: {
-    Table
+    Table, TimeButtons
   },
   data() {
     return {
@@ -47,9 +50,10 @@ export default {
   },
   methods: {
     getDefaultData: function(){
-      const timeQuery = this.$route.query.from ? this.$route.query.from : Math.floor(Date.now()/1000);
-      // const now = 1546300800;
-      console.log(typeof timeQuery)
+      const timeQuery = this.$route.query.from ? this.$route.query.from : 1546300800;
+      // Start(January) = 1546300800;
+      // const now = Math.floor(Date.now()/1000)
+
       PrimephonicAPI.getProcessedData(timeQuery)
         .then( data => {
           this.myData = data;
@@ -58,7 +62,7 @@ export default {
           this.labels = this.getLeadingTable();
         })
         .catch( (err) => {
-          console.log("getSearch error on default, ", err)
+          alert(`The backend server may not be connected. \nDid you run '$ node server.js' on the "./backend" root directory?`)
         });
     },
     getLeadingTrack: function(myData) {
@@ -96,18 +100,19 @@ export default {
       // console.log(standsArray)
       return standsArray;
     },
-    onUpdateQuery: (timeSlug) => {
-      // if (typeof timeSlug === "string"){
-      //   timeSlug = parseInt(timeSlug)
-      //   //  TODO: Throw error on invalid timeSlug input...
-      // }
+    onUpdateQuery: function(timeSlug){
       PrimephonicAPI.getProcessedData(timeSlug)
         .then(newData => {
           if (newData.dblength !== this.myData.dbLength){
             this.myData = newData;
             this.slug = timeSlug;
+            this.winner = this.getLeadingTrack(newData.trackStanding);
+            this.labels = this.getLeadingTable();
           }
-        })
+        }).catch((e) => {
+          // alert(`Server may not be connected. Did you run 'node server.js' on the "./backend" root directory?`)
+
+      })
     },
     updateRequest: function(){
       console.log("updateRequest slug", this.slug);
@@ -123,7 +128,7 @@ export default {
             }
           })
           .catch( (err) => {
-            console.log("getSearch error, ", err)
+            // alert(`Server may not be connected.`)
           });
       }
     },
