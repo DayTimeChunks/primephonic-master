@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import logo from './img/primephonic.jpg';
+import logo from './assets/primephonic.jpg';
 import './App.css';
 import Table from "./components/Table";
 import BarChart from "./components/BarChart";
 import * as PrimephonicAPI from "./utils/PrimephonicAPI"
 import TimeButtons from "./components/TimeButtons";
 import { range } from 'd3-array'
-import { scaleThreshold, scaleLinear } from 'd3-scale'
-import { geoCentroid } from 'd3-geo'
+import { scaleThreshold } from 'd3-scale'
 
 import PropTypes from 'prop-types'
 import ErrorBoundary from "./components/ErrorBoundary";

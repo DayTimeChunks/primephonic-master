@@ -30,9 +30,6 @@
 
   export default {
     name: "Table",
-    components: {
-      // TimeButtons
-    },
     props: {
       myData: Object,
       winner: Object,

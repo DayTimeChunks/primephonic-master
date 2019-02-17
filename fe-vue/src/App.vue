@@ -13,12 +13,16 @@
           <Table v-bind:myData="myData"
                  v-bind:winner="winner"
                  v-bind:labels="labels"
-
           />
         </div>
       </div>
       <div class="col-12 col-md-6 text-center">
-        Test
+        <BarChart
+            v-bind:myData="myData"
+            v-bind:colorScale="colorScale"
+            v-bind:size="size"
+            :key="chartKey"
+        />
       </div>
     </div>
     <!--<router-view></router-view>-->
@@ -31,6 +35,8 @@
 import * as PrimephonicAPI from "./utils/PrimephonicAPI"
 import Table from './components/Table.vue'
 import TimeButtons from "./components/TimeButtons";
+import BarChart from "./components/BarChart";
+import { scaleThreshold } from 'd3-scale'
 
 const reqFrequency = 15000; // milliseconds
 
@@ -38,6 +44,7 @@ export default {
   name: 'app',
   // props: ['data'],
   components: {
+    BarChart,
     Table, TimeButtons
   },
   data() {
@@ -45,7 +52,10 @@ export default {
       myData: {},
       slug: null,
       winner: {"name": 'none', "time": 0},
-      labels: []
+      labels: [],
+      colorScale: scaleThreshold().domain([6,11,16,21,26]).range(["#854442", "#75739F", "#5EAFC6", "#41A368", "#93C464"]),
+      size: [this.scaleWidth(), 350],
+      chartKey: 0
     }
   },
   methods: {
@@ -57,6 +67,7 @@ export default {
       PrimephonicAPI.getProcessedData(timeQuery)
         .then( data => {
           this.myData = data;
+          this.chartKey++;
           this.slug = timeQuery;
           this.winner = this.getLeadingTrack(data.trackStanding);
           this.labels = this.getLeadingTable();
@@ -105,6 +116,7 @@ export default {
         .then(newData => {
           if (newData.dblength !== this.myData.dbLength){
             this.myData = newData;
+            this.chartKey++;
             this.slug = timeSlug;
             this.winner = this.getLeadingTrack(newData.trackStanding);
             this.labels = this.getLeadingTable();
@@ -122,9 +134,9 @@ export default {
           .then(newData => {
             if (newData.dbLength !== this.myData.dbLength) {
               this.myData = newData;
+              this.chartKey++;
               this.winner = this.getLeadingTrack(newData.trackStanding);
               this.labels = this.getLeadingTable();
-
             }
           })
           .catch( (err) => {
@@ -134,13 +146,17 @@ export default {
     },
     autoRefresh: function(){
       setInterval(this.updateRequest, reqFrequency);
+    },
+    scaleWidth: function(){
+      let chartWidth = window.screen.width * 0.8;
+      if (window.screen.width > 700){
+        chartWidth *= 0.4
+      }
+      return chartWidth
     }
   },
   beforeMount(){
-    console.log("beforeMount")
     this.getDefaultData();
-
-    console.log(this.myData)
   },
   mounted(){
     this.autoRefresh();
