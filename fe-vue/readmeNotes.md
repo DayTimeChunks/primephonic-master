@@ -1,4 +1,4 @@
-# 3rd Party 
+# Notes to my future self
 
 During set-up, I installed the vue cli:
 
@@ -7,8 +7,6 @@ During set-up, I installed the vue cli:
 After set-up, dependencies installed: 
 
 `npm i vue bootstrap-vue bootstrap`
-
-# Notes to my future self
 
 Life-cycle hooks:
 - [Docs](https://vuejs.org/v2/api/#Options-Lifecycle-Hooks)
