@@ -17,6 +17,7 @@ In the current MVP version of the project (v1), the app has the ability to query
  4. 1 day
  5. Right now (resets count to the exact second)
 
+For best data visualisation, let the server run in the background for a few minutes.
 
 ## Limitations / TODO's
 
@@ -25,6 +26,7 @@ Current limitations/TODO's of the app beyond project requirements:
 - Set up a service worker to improve offline experience
 - Write unit tests
 - Include accessibility features (ARIA, etc...)
+- Error boundaries around components are only included in the **React** version. TODO: research how to do this in Vue.js 
 
 ## Running this app
 
@@ -73,7 +75,7 @@ To run this app:
 2. Run the following commands on terminal:
 
     `npm install -g serve`
-    
+
     `npm run build`
 
     and

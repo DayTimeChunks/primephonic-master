@@ -14,6 +14,7 @@
                  v-bind:winner="winner"
                  v-bind:labels="labels"
           />
+          <p className="mt-3"><small>The table shows total seconds streamed by label. The most streamed track should match the highest bar for that label.</small></p>
         </div>
       </div>
       <div class="col-12 col-md-6 text-center">
@@ -23,6 +24,7 @@
             v-bind:size="size"
             :key="chartKey"
         />
+        <p class="mt-3"><small>Seconds per track by label. Each label manages the same 5 tracks! Note that bar sizes are scaled relative to the most played track.</small></p>
       </div>
     </div>
     <!--<router-view></router-view>-->

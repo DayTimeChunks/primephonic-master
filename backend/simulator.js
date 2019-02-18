@@ -11,7 +11,7 @@ const db = {
       "track_id": "track1",
       "label": "label1",
       "stream_started_on": 1546422100,
-      "seconds_streamed": 1290
+      "seconds_streamed": 290
     },
     {
       "user_id": "2",
@@ -25,7 +25,7 @@ const db = {
       "track_id": "track2",
       "label": "label1",
       "stream_started_on": 1546422130,
-      "seconds_streamed": 1500
+      "seconds_streamed": 500
     },
     {
       "user_id": "4",
@@ -33,6 +33,20 @@ const db = {
       "label": "label1",
       "stream_started_on": 1546422140,
       "seconds_streamed": 100
+    },
+    {
+      "user_id": "1",
+      "track_id": "track4",
+      "label": "label2",
+      "stream_started_on": 1547942400,  // 01/20/2019
+      "seconds_streamed": 600
+    },
+    {
+      "user_id": "3",
+      "track_id": "track5",
+      "label": "label3",
+      "stream_started_on": 1550188800,  // 02/15/2019
+      "seconds_streamed": 300
     }
   ]
 };
