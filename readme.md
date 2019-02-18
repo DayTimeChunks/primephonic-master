@@ -24,8 +24,7 @@ Current limitations/TODO's of the app beyond project requirements:
 
 - Set up a service worker to improve offline experience
 - Write unit tests
-- 
-
+- Include accessibility features (ARIA, etc...)
 
 ## Running this app
 
@@ -83,6 +82,3 @@ To run this app:
 3. The app will be available on: `http://localhost:5000 `
 
 4. To terminate, type `ctrl + c`
-
-5. Delete caches on your localhost port by going to: *Developer tools > Applications > Cache* . Then delete the relevant cache.
-     
