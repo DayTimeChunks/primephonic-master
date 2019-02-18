@@ -33,7 +33,7 @@ Current limitations/TODO's of the app beyond project requirements:
 1. Download the project directory
 2. cd to the "./backend" folder
 
-  `npm install`
+    `npm install`
 
 3. Start-up the backend by typing on terminal: `node server.js` (will run on `http://localhost:5001/`)
 
@@ -73,6 +73,8 @@ To run this app:
 2. Run the following commands on terminal:
 
     `npm install -g serve`
+    
+    `npm run build`
 
     and
 
