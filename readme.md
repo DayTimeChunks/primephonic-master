@@ -1,5 +1,11 @@
 # Primephonic's front- and back-end streaming monitor
 
+Primephonic is a new music streaming app that is filling the need for better streaming services for classical music.
+
+You can check Primephonic out [here](https://www.primephonic.com/) and read more about them [here](https://medium.com/primephonic-engineering).
+
+**Important!** All data presented in this project is simulated, so it's not real! I only used it as an example to showcase my fiddling with `Vue.js` and `React.js` with `D3.js`.  
+
 ## Description
 
 This project folder holds both a backend server (that runs on localhost:5001) and **two** front-end versions,
@@ -26,7 +32,7 @@ Current limitations/TODO's of the app beyond project requirements:
 - Set up a service worker to improve offline experience
 - Write unit tests
 - Include accessibility features (ARIA, etc...)
-- Error boundaries around components are only included in the **React** version. TODO: research how to do this in Vue.js 
+- Error boundaries around components are only included in the **React** version. TODO: research how to do this in Vue.js
 
 ## Running this app
 
